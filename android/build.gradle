@@ -1,0 +1,56 @@
+group 'com.transistorsoft.flutter.backgroundgeolocation'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'com.android.library'
+
+def DEFAULT_COMPILE_SDK_VERSION                 = 28
+def DEFAULT_PLAY_SERVICES_LOCATION_VERSION      = "16.0.0"
+def DEFAULT_SUPPORT_LIB_VERSION                 = "1.0.2"
+def DEFAULT_OK_HTTP_VERSION                     = "3.12.1"
+def DEFAULT_ANDROID_PERMISSIONS_VERSION         = "0.1.8"
+def DEFAULT_REMOVE_DEBUG_SOUNDS_IN_RELEASE      = true
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+android {
+    compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
+
+    defaultConfig {
+        minSdkVersion 16
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+
+    def removeDebugSounds = safeExtGet('removeBackgroundGeolocationDebugSoundsInRelase', DEFAULT_REMOVE_DEBUG_SOUNDS_IN_RELEASE)
+
+    removeDebugSounds = true
+
+}
+
+repositories {
+    maven {
+        url './libs'
+    }
+}
+
+dependencies {
+    def playServicesLocationVersion =safeExtGet('playServicesLocationVersion', DEFAULT_PLAY_SERVICES_LOCATION_VERSION)
+    def supportLibVersion = safeExtGet('supportLibVersion', DEFAULT_SUPPORT_LIB_VERSION)
+    def okHttpVersion = safeExtGet('okHttpVersion', DEFAULT_OK_HTTP_VERSION)
+    def androidPermissionsVersion = safeExtGet('androidPermissionsVersion', DEFAULT_ANDROID_PERMISSIONS_VERSION)
+
+    implementation fileTree(include: '*.aar', dir: 'libs')
+    implementation "com.google.android.gms:play-services-location:$playServicesLocationVersion"
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'com.github.tony19:logback-android:1.3.0-2'
+    // android-permissions
+    implementation "com.intentfilter:android-permissions:$androidPermissionsVersion"
+    implementation "androidx.appcompat:appcompat:$supportLibVersion"
+}

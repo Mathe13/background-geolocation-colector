@@ -1,0 +1,30 @@
+name: flutter_background_geolocation
+description: The most sophisticated background location-tracking & geofencing module with battery-conscious motion-detection intelligence for iOS and Android.
+version: 1.0.1
+author: Chris Scott, Transistor Software <info@transistorsoft.com>
+homepage: https://github.com/transistorsoft/flutter_background_geolocation
+
+dependencies:
+  flutter:
+    sdk: flutter
+  device_info: ^0.4.0
+  background_fetch: ^0.2.0
+flutter:
+  plugin:
+    androidPackage: com.transistorsoft.flutter.backgroundgeolocation
+    pluginClass: FLTBackgroundGeolocationPlugin  
+      # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+      - assets/
+
+environment:
+  sdk: ">=2.0.0-dev.28.0 <3.0.0"
+  flutter: ">=0.1.4 <2.0.0"
+
+
+
