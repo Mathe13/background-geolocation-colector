@@ -3,7 +3,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
 import 'package:background_fetch/background_fetch.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,7 +26,8 @@ class HomeView extends StatefulWidget {
   State createState() => HomeViewState();
 }
 
-class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeView> {
+class HomeViewState extends State<HomeView>
+    with TickerProviderStateMixin<HomeView> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   TabController _tabController;
 
@@ -50,18 +52,18 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
     _odometer = '0';
     _testModeClicks = 0;
 
-    _tabController = TabController(
-        length: 2,
-        initialIndex: 0,
-        vsync: this
-    );
+    _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
     _tabController.addListener(_handleTabChange);
 
     initPlatformState();
   }
 
   Future<Null> initPlatformState() async {
-    BackgroundFetch.configure(BackgroundFetchConfig(minimumFetchInterval: 15, stopOnTerminate: false, enableHeadless: true), () async {
+    BackgroundFetch.configure(
+        BackgroundFetchConfig(
+            minimumFetchInterval: 15,
+            stopOnTerminate: false,
+            enableHeadless: true), () async {
       print('[BackgroundFetch] received event');
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -97,21 +99,21 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
 
     // 2.  Configure the plugin
     bg.BackgroundGeolocation.ready(bg.Config(
-        reset: false,
-        heartbeatInterval: 60,
-        desiredAccuracy: bg.Config.DESIRED_ACCURACY_NAVIGATION,
-        distanceFilter: 10.0,
-        stopOnTerminate: false,
-        startOnBoot: true,
-        foregroundService: true,
-        enableHeadless: true,
-        stopTimeout: 1,
-        debug: true,
-        autoSync: true,
-        url: 'http://tracker.transistorsoft.com/locations/$_username',
-        params: deviceParams,
-        logLevel: bg.Config.LOG_LEVEL_VERBOSE
-    )).then((bg.State state) {
+            reset: false,
+            heartbeatInterval: 60,
+            desiredAccuracy: bg.Config.DESIRED_ACCURACY_NAVIGATION,
+            distanceFilter: 10.0,
+            stopOnTerminate: false,
+            startOnBoot: true,
+            foregroundService: true,
+            enableHeadless: true,
+            stopTimeout: 1,
+            debug: true,
+            autoSync: true,
+            url: 'http://192.168.1.3:3000/locations/$_username',
+            params: deviceParams,
+            logLevel: bg.Config.LOG_LEVEL_VERBOSE))
+        .then((bg.State state) {
       print('[ready] ${state.toMap()}');
       if (state.schedule.isNotEmpty) {
         bg.BackgroundGeolocation.startSchedule();
@@ -182,11 +184,12 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
     bg.BackgroundGeolocation.playSound(util.Dialog.getSoundId("BUTTON_CLICK"));
 
     bg.BackgroundGeolocation.getCurrentPosition(
-        persist: true,     // <-- do not persist this location
-        desiredAccuracy: 0, // <-- desire best possible accuracy
-        timeout: 10,     // <-- wait 30s before giving up.
-        samples: 3          // <-- sample just 1 location
-    ).then((bg.Location location) {
+            persist: true, // <-- do not persist this location
+            desiredAccuracy: 0, // <-- desire best possible accuracy
+            timeout: 10, // <-- wait 30s before giving up.
+            samples: 3 // <-- sample just 1 location
+            )
+        .then((bg.Location location) {
       print('[getCurrentPosition] - $location');
     }).catchError((error) {
       print('[getCurrentPosition] ERROR: $error');
@@ -209,7 +212,8 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
     print('[${bg.Event.LOCATION}] - $location');
 
     setState(() {
-      events.insert(0, Event(bg.Event.LOCATION, location, location.toString(compact: true)));
+      events.insert(0,
+          Event(bg.Event.LOCATION, location, location.toString(compact: true)));
       _odometer = (location.odometer / 1000.0).toStringAsFixed(1);
     });
   }
@@ -217,14 +221,18 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
   void _onLocationError(bg.LocationError error) {
     print('[${bg.Event.LOCATION}] ERROR - $error');
     setState(() {
-      events.insert(0, Event(bg.Event.LOCATION + " error", error, error.toString()));
+      events.insert(
+          0, Event(bg.Event.LOCATION + " error", error, error.toString()));
     });
   }
 
   void _onMotionChange(bg.Location location) {
     print('[${bg.Event.MOTIONCHANGE}] - $location');
     setState(() {
-      events.insert(0, Event(bg.Event.MOTIONCHANGE, location, location.toString(compact:true)));
+      events.insert(
+          0,
+          Event(bg.Event.MOTIONCHANGE, location,
+              location.toString(compact: true)));
       _isMoving = location.isMoving;
     });
   }
@@ -255,7 +263,8 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
   void _onConnectivityChange(bg.ConnectivityChangeEvent event) {
     print('[${bg.Event.CONNECTIVITYCHANGE}] - $event');
     setState(() {
-      events.insert(0, Event(bg.Event.CONNECTIVITYCHANGE, event, event.toString()));
+      events.insert(
+          0, Event(bg.Event.CONNECTIVITYCHANGE, event, event.toString()));
     });
   }
 
@@ -271,7 +280,7 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
 
     bg.BackgroundGeolocation.startBackgroundTask().then((int taskId) {
       // Execute an HTTP request to test an async operation completes.
-      String url = "http://tracker.transistorsoft.com/devices?company_token=$_username";
+      String url = "http://192.168.1.3:3000/devices?company_token=$_username";
       http.read(url).then((String result) {
         print("[http test] success: $result");
         bg.BackgroundGeolocation.playSound("POP");
@@ -282,23 +291,27 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
       });
     });
 
-
     setState(() {
-      events.insert(0, Event(bg.Event.GEOFENCE, event, event.toString(compact: false)));
+      events.insert(
+          0, Event(bg.Event.GEOFENCE, event, event.toString(compact: false)));
     });
   }
 
   void _onGeofencesChange(bg.GeofencesChangeEvent event) {
     print('[${bg.Event.GEOFENCESCHANGE}] - $event');
     setState(() {
-      events.insert(0, Event(bg.Event.GEOFENCESCHANGE, event, event.toString(compact: false)));
+      events.insert(
+          0,
+          Event(
+              bg.Event.GEOFENCESCHANGE, event, event.toString(compact: false)));
     });
   }
 
   void _onSchedule(bg.State state) {
     print('[${bg.Event.SCHEDULE}] - $state');
     setState(() {
-      events.insert(0, Event(bg.Event.SCHEDULE, state, "enabled: ${state.enabled}"));
+      events.insert(
+          0, Event(bg.Event.SCHEDULE, state, "enabled: ${state.enabled}"));
     });
   }
 
@@ -307,14 +320,20 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
     setState(() {
       _enabled = enabled;
       events.clear();
-      events.insert(0, Event(bg.Event.ENABLEDCHANGE, enabled, '[EnabledChangeEvent enabled: $enabled]'));
+      events.insert(
+          0,
+          Event(bg.Event.ENABLEDCHANGE, enabled,
+              '[EnabledChangeEvent enabled: $enabled]'));
     });
   }
 
   void _onPowerSaveChange(bool enabled) {
     print('[${bg.Event.POWERSAVECHANGE}] - $enabled');
     setState(() {
-      events.insert(0, Event(bg.Event.POWERSAVECHANGE, enabled, 'Power-saving enabled: $enabled'));
+      events.insert(
+          0,
+          Event(bg.Event.POWERSAVECHANGE, enabled,
+              'Power-saving enabled: $enabled'));
     });
   }
 
@@ -324,34 +343,25 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
       appBar: AppBar(
           title: const Text('BG Geo'),
           centerTitle: true,
-          leading: IconButton(onPressed: _onClickHome, icon: Icon(Icons.home, color: Colors.black)),
+          leading: IconButton(
+              onPressed: _onClickHome,
+              icon: Icon(Icons.home, color: Colors.black)),
           backgroundColor: Theme.of(context).bottomAppBarColor,
           brightness: Brightness.light,
           actions: <Widget>[
-            Switch(value: _enabled, onChanged: _onClickEnable
-            ),
+            Switch(value: _enabled, onChanged: _onClickEnable),
           ],
           bottom: TabBar(
               controller: _tabController,
               indicatorColor: Colors.red,
-              tabs: [
-                Tab(icon: Icon(Icons.map)),
-                Tab(icon: Icon(Icons.list))
-              ]
-          )
-      ),
+              tabs: [Tab(icon: Icon(Icons.map)), Tab(icon: Icon(Icons.list))])),
       //body: body,
       body: SharedEvents(
           events: events,
           child: TabBarView(
               controller: _tabController,
-              children: [
-                MapView(),
-                EventList()
-              ],
-              physics: new NeverScrollableScrollPhysics()
-          )
-      ),
+              children: [MapView(), EventList()],
+              physics: new NeverScrollableScrollPhysics())),
       bottomNavigationBar: BottomAppBar(
           child: Container(
               padding: const EdgeInsets.only(left: 5.0, right: 5.0),
@@ -364,19 +374,17 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
                       onPressed: _onClickGetCurrentPosition,
                     ),
                     FlatButton(
-                        child: Text('$_motionActivity · $_odometer km'),
-                        onPressed: _onClickTestMode,
+                      child: Text('$_motionActivity · $_odometer km'),
+                      onPressed: _onClickTestMode,
                     ),
                     MaterialButton(
                         minWidth: 50.0,
-                        child: Icon((_isMoving) ? Icons.pause : Icons.play_arrow, color: Colors.white),
+                        child: Icon(
+                            (_isMoving) ? Icons.pause : Icons.play_arrow,
+                            color: Colors.white),
                         color: (_isMoving) ? Colors.red : Colors.green,
-                        onPressed: _onClickChangePace
-                    )
-                  ]
-              )
-          )
-      ),
+                        onPressed: _onClickChangePace)
+                  ]))),
     );
   }
 
@@ -406,7 +414,9 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
   }
 
   void _handleTabChange() async {
-    if (!_tabController.indexIsChanging) { return; }
+    if (!_tabController.indexIsChanging) {
+      return;
+    }
     final SharedPreferences prefs = await _prefs;
     prefs.setInt("tabIndex", _tabController.index);
   }

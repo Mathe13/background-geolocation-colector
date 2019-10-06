@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:unicorndial/unicorndial.dart';
 
 import 'actions.dart';
 import 'dart:async';
 import 'settings_view.dart';
-import 'package:flutter_background_geolocation_example/advanced/util/dialog.dart' as util;
+import 'package:flutter_background_geolocation_example/advanced/util/dialog.dart'
+    as util;
 
 class MainMenuButton extends StatelessWidget {
   BuildContext _context;
@@ -22,15 +21,16 @@ class MainMenuButton extends StatelessWidget {
       new Timer(Duration(milliseconds: 250), () {
         bg.BackgroundGeolocation.finish(taskId);
       });
-
     });
   }
 
   void _onClickSettings() {
     bg.BackgroundGeolocation.playSound(util.Dialog.getSoundId("OPEN"));
-    Navigator.of(_context).push(MaterialPageRoute<Null>(fullscreenDialog: true, builder: (BuildContext context) {
-      return SettingsView();
-    }));
+    Navigator.of(_context).push(MaterialPageRoute<Null>(
+        fullscreenDialog: true,
+        builder: (BuildContext context) {
+          return SettingsView();
+        }));
   }
 
   void _onClickResetOdometer() {
@@ -51,7 +51,6 @@ class MainMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     double buttonBottomPadding = 50.0;
     var mediaQueryData = MediaQuery.of(context);
     if (_isIPhoneX(mediaQueryData)) {
@@ -85,8 +84,7 @@ class MainMenuButton extends StatelessWidget {
               foregroundColor: Colors.black,
               mini: true,
               child: Icon(Icons.delete),
-              onPressed: _onClickDestroyLocations)
-      ),
+              onPressed: _onClickDestroyLocations)),
       UnicornButton(
           hasLabel: true,
           labelText: "Email log",
@@ -96,8 +94,7 @@ class MainMenuButton extends StatelessWidget {
               foregroundColor: Colors.black,
               mini: true,
               child: Icon(Icons.email),
-              onPressed: _onClickEmailLog)
-      ),
+              onPressed: _onClickEmailLog)),
       UnicornButton(
           hasLabel: true,
           labelText: "Upload locations",
@@ -107,8 +104,7 @@ class MainMenuButton extends StatelessWidget {
               foregroundColor: Colors.black,
               mini: true,
               child: Icon(Icons.cloud_upload),
-              onPressed: _onClickSync)
-      ),
+              onPressed: _onClickSync)),
       UnicornButton(
           hasLabel: true,
           labelText: "Reset odometer",
@@ -118,8 +114,7 @@ class MainMenuButton extends StatelessWidget {
               foregroundColor: Colors.black,
               mini: true,
               child: Icon(Icons.av_timer),
-              onPressed: _onClickResetOdometer)
-      ),
+              onPressed: _onClickResetOdometer)),
       UnicornButton(
           hasLabel: true,
           labelText: "Settings",
@@ -129,8 +124,7 @@ class MainMenuButton extends StatelessWidget {
               foregroundColor: Colors.black,
               mini: true,
               child: Icon(Icons.settings),
-              onPressed: _onClickSettings)
-      )
+              onPressed: _onClickSettings))
     ];
   }
 

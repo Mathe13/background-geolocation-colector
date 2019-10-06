@@ -16,7 +16,7 @@ import 'advanced/app.dart';
 import 'package:flutter_background_geolocation_example/advanced/util/dialog.dart'
     as util;
 
-const TRACKER_HOST = 'http://tracker.transistorsoft.com/locations/';
+const TRACKER_HOST = 'http://192.168.1.3:3000/locations';
 
 class HomeApp extends StatefulWidget {
   @override
@@ -86,8 +86,7 @@ class _HomeViewState extends State<_HomeView> {
             height: 200.0,
             child: Column(children: <Widget>[
               new Text(
-                  'Please enter a unique identifier so that BackgroundGeolocation can post locations to the demo server:'),
-              new Text('tracker.transistorsoft.com'),
+                  'Entre com uma indenticação para que possamos salvar seus dados de forma individual'),
               new Row(
                 children: <Widget>[
                   Expanded(
@@ -100,8 +99,8 @@ class _HomeViewState extends State<_HomeView> {
                       },
                       autofocus: true,
                       decoration: new InputDecoration(
-                          labelText: 'Username',
-                          hintText: 'eg. Github username'),
+                          labelText: 'Indentificação',
+                          hintText: 'ex. nome do Github'),
                     ),
                   )
                 ],
@@ -110,7 +109,7 @@ class _HomeViewState extends State<_HomeView> {
           ),
           actions: <Widget>[
             new FlatButton(
-                child: const Text('Save'), onPressed: _onSelectUsername)
+                child: const Text('Salvar'), onPressed: _onSelectUsername)
           ],
         );
       },
@@ -165,8 +164,11 @@ class _HomeViewState extends State<_HomeView> {
                 padding: EdgeInsets.all(20),
               ),
               Container(
-                // width: double.infinity,
                 decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black54, spreadRadius: 2, blurRadius: 3)
+                    ],
                     color: Color(0xFF4caf50),
                     borderRadius: BorderRadius.all(Radius.circular(40))),
                 margin: EdgeInsets.symmetric(horizontal: 10),
@@ -177,7 +179,47 @@ class _HomeViewState extends State<_HomeView> {
                   ),
                   onPressed: () => {navigate('advanced')},
                 ),
-              )
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        'Este Aplicativo enviara dados para o nosso servidor, voce pode visualizar eles acessando o site:',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        'http://192.168.1.3:3000/$_username',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black54,
+                                spreadRadius: 1,
+                                blurRadius: 2)
+                          ]),
+                      margin: EdgeInsets.only(top: 10.0, left: 10.0),
+                      child: new ListTile(
+                          leading: const Icon(Icons.account_box),
+                          title: const Text('Indenticação'),
+                          subtitle: Text("$_username"))))
             ],
           ),
         ),
@@ -190,12 +232,12 @@ class _HomeViewState extends State<_HomeView> {
                       onPressed: () {
                         _showDialog();
                       },
-                      child: Text('Edit Username'),
+                      child: Text('Editar Indentificação'),
                       color: Colors.redAccent,
                       textColor: Colors.white),
                   FlatButton(
                       onPressed: () {},
-                      child: Text('View Tracking'),
+                      child: Text('Acessar site'),
                       color: Colors.blue,
                       textColor: Colors.white),
                 ])));

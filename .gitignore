@@ -1,0 +1,14 @@
+.DS_Store
+.atom/
+.dart_tool/
+.idea
+.packages
+.pub/
+packages
+*.iml
+pubspec.lock
+build/
+ios/.generated
+.gradle
+doc
+example/android/key.properties
