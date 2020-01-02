@@ -110,7 +110,7 @@ class HomeViewState extends State<HomeView>
             stopTimeout: 1,
             debug: true,
             autoSync: true,
-            url: 'http://192.168.1.3:3000/locations/$_username',
+            url: 'http://192.168.1.8:3000/locations/$_username',
             params: deviceParams,
             logLevel: bg.Config.LOG_LEVEL_VERBOSE))
         .then((bg.State state) {
@@ -280,7 +280,7 @@ class HomeViewState extends State<HomeView>
 
     bg.BackgroundGeolocation.startBackgroundTask().then((int taskId) {
       // Execute an HTTP request to test an async operation completes.
-      String url = "http://192.168.1.3:3000/devices?company_token=$_username";
+      String url = "http://192.168.1.8:3000/devices?company_token=$_username";
       http.read(url).then((String result) {
         print("[http test] success: $result");
         bg.BackgroundGeolocation.playSound("POP");

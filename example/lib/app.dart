@@ -11,12 +11,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
 
-import 'hello_world/app.dart';
 import 'advanced/app.dart';
 import 'package:flutter_background_geolocation_example/advanced/util/dialog.dart'
     as util;
 
-const TRACKER_HOST = 'http://192.168.1.3:3000/locations';
+const TRACKER_HOST = 'http://192.168.1.8:3000/locations';
 
 class HomeApp extends StatefulWidget {
   @override
@@ -195,7 +194,7 @@ class _HomeViewState extends State<_HomeView> {
                     ),
                     Center(
                       child: Text(
-                        'http://192.168.1.3:3000/$_username',
+                        'http://192.168.1.8:3000/$_username',
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
@@ -266,9 +265,6 @@ class _HomeViewState extends State<_HomeView> {
 
     Widget app;
     switch (appName) {
-      case HelloWorldApp.NAME:
-        app = new HelloWorldApp();
-        break;
       case AdvancedApp.NAME:
         app = new AdvancedApp();
         break;

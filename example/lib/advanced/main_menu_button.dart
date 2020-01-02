@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:unicorndial/unicorndial.dart';
-
-import 'actions.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
+import 'actions.dart' as act;
 import 'dart:async';
 import 'settings_view.dart';
 import 'package:flutter_background_geolocation_example/advanced/util/dialog.dart'
@@ -38,15 +39,15 @@ class MainMenuButton extends StatelessWidget {
   }
 
   void _onClickEmailLog() async {
-    Actions.emailLog(_context);
+    act.Actions.emailLog(_context);
   }
 
   void _onClickSync() async {
-    Actions.sync(_context);
+    act.Actions.sync(_context);
   }
 
   void _onClickDestroyLocations() async {
-    Actions.destroyLocations(_context);
+    act.Actions.destroyLocations(_context);
   }
 
   @override

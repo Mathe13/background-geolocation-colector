@@ -7,7 +7,6 @@ import 'package:background_fetch/background_fetch.dart';
 
 import 'package:flutter_background_geolocation_example/app.dart';
 import 'advanced/app.dart';
-import 'hello_world/app.dart';
 
 /// Receive events from BackgroundGeolocation in Headless state.
 void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
@@ -88,14 +87,13 @@ void main() {
   /// - HelloWorldAp
   /// - HomeApp
   ///
+  ///
+  WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((SharedPreferences prefs) {
     String appName = prefs.getString("app");
     switch (appName) {
       case AdvancedApp.NAME:
         runApp(new AdvancedApp());
-        break;
-      case HelloWorldApp.NAME:
-        runApp(new HelloWorldApp());
         break;
       default:
         // Default app.  Renders the application selector home page.
